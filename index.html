@@ -1,15 +1,20 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Yeshenyue11 - Full Stack Developer & Creative Coder">
-    <meta name="keywords" content="Developer, Portfolio, Full Stack, Web Development">
+    <meta name="keywords" content="developer, portfolio, full stack, web development, javascript, python">
     <meta name="author" content="Yeshenyue11">
+    <meta property="og:title" content="Yeshenyue11 | Creative Developer">
+    <meta property="og:description" content="Full Stack Developer & Open Source Enthusiast">
+    <meta property="og:image" content="https://github.com/Yeshenyue11.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yeshenyue11.github.io">
     <title>Yeshenyue11 | Creative Developer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -20,10 +25,11 @@
             --text-muted: #606070;
             --accent-primary: #38bdf8;
             --accent-secondary: #818cf8;
+            --accent-pink: #f472b6;
             --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
             --border-color: rgba(255, 255, 255, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --card-hover: rgba(56, 189, 248, 0.1);
+            --glow: 0 0 40px rgba(56, 189, 248, 0.3);
         }
 
         .light-mode {
@@ -35,7 +41,7 @@
             --text-muted: #8a8a9e;
             --border-color: rgba(0, 0, 0, 0.1);
             --shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
-            --card-hover: rgba(56, 189, 248, 0.15);
+            --glow: 0 0 40px rgba(56, 189, 248, 0.2);
         }
 
         * {
@@ -57,7 +63,7 @@
             transition: background 0.3s ease, color 0.3s ease;
         }
 
-        /* Animated Background */
+        /* Animated Background with Multiple Layers */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -70,19 +76,76 @@
 
         .bg-animation .particle {
             position: absolute;
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             background: var(--accent-primary);
             border-radius: 50%;
-            opacity: 0.3;
-            animation: float 15s infinite;
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        .bg-animation .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.15;
+            animation: orbFloat 30s infinite ease-in-out;
+        }
+
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent-primary);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb-2 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-secondary);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -10s;
+        }
+
+        .orb-3 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-pink);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -20s;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(100vh) scale(0); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
+            10% { opacity: 0.4; }
+            90% { opacity: 0.4; }
             100% { transform: translateY(-100vh) scale(1); opacity: 0; }
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(50px, 50px) scale(1.1); }
+            66% { transform: translate(-50px, -50px) scale(0.9); }
+        }
+
+        /* Grid Pattern Overlay */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(56, 189, 248, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
         }
 
         /* Navigation */
@@ -92,7 +155,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            padding: 1.5rem 5%;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -107,12 +170,30 @@
         }
 
         .logo {
+            font-family: 'Orbitron', monospace;
             font-size: 1.5rem;
             font-weight: 800;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover::after {
+            transform: scaleX(1);
         }
 
         .nav-links {
@@ -125,19 +206,22 @@
             color: var(--text-secondary);
             text-decoration: none;
             font-weight: 500;
+            font-size: 0.95rem;
             transition: color 0.3s ease;
             position: relative;
+            padding: 0.5rem 0;
         }
 
         .nav-links a::after {
             content: '';
             position: absolute;
-            bottom: -4px;
-            left: 0;
+            bottom: 0;
+            left: 50%;
             width: 0;
             height: 2px;
             background: var(--accent-gradient);
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
         }
 
         .nav-links a:hover {
@@ -146,6 +230,12 @@
 
         .nav-links a:hover::after {
             width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
         }
 
         .theme-toggle {
@@ -172,6 +262,23 @@
             fill: var(--text-primary);
         }
 
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 25px;
+            height: 2px;
+            background: var(--text-primary);
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
         /* Hero Section */
         .hero {
             min-height: 100vh;
@@ -180,22 +287,60 @@
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 6rem 5% 2rem;
+            padding: 8rem 5% 4rem;
+            position: relative;
+        }
+
+        .hero-avatar-container {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .hero-avatar-ring {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            height: 180px;
+            border: 3px solid transparent;
+            border-radius: 50%;
+            background: var(--accent-gradient) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            mask-composite: exclude;
+            animation: spin 8s linear infinite;
+        }
+
+        .hero-avatar-ring::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-top-color: var(--accent-primary);
+            border-radius: 50%;
+            animation: spin 3s linear infinite reverse;
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
         }
 
         .hero-avatar {
             width: 150px;
             height: 150px;
             border-radius: 50%;
-            background: var(--accent-gradient);
-            padding: 4px;
-            margin-bottom: 2rem;
-            animation: pulse-glow 3s infinite;
+            position: relative;
+            z-index: 1;
+            border: 4px solid var(--bg-secondary);
+            box-shadow: var(--glow);
+            transition: transform 0.3s ease;
         }
 
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(56, 189, 248, 0.4); }
-            50% { box-shadow: 0 0 40px rgba(129, 140, 248, 0.6); }
+        .hero-avatar:hover {
+            transform: scale(1.05);
         }
 
         .hero-avatar img {
@@ -205,21 +350,56 @@
             object-fit: cover;
         }
 
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.5rem;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--accent-primary);
+            border-radius: 50px;
+            color: var(--accent-primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+            50% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0.3; }
+        }
+
         .hero h1 {
+            font-family: 'Orbitron', monospace;
             font-size: clamp(2.5rem, 8vw, 5rem);
-            font-weight: 800;
+            font-weight: 900;
             margin-bottom: 1rem;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: -0.02em;
         }
 
         .typing-text {
-            font-size: clamp(1.2rem, 4vw, 2rem);
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
             color: var(--text-secondary);
-            margin-bottom: 2rem;
-            min-height: 3rem;
+            margin-bottom: 1.5rem;
+            min-height: 2rem;
         }
 
         .typing-text .cursor {
@@ -228,11 +408,11 @@
             height: 1.2em;
             background: var(--accent-primary);
             margin-left: 4px;
-            animation: blink 1s infinite;
+            animation: cursorBlink 1s infinite;
             vertical-align: middle;
         }
 
-        @keyframes blink {
+        @keyframes cursorBlink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
@@ -242,6 +422,7 @@
             color: var(--text-secondary);
             font-size: 1.1rem;
             margin-bottom: 3rem;
+            line-height: 1.8;
         }
 
         .hero-buttons {
@@ -252,7 +433,7 @@
         }
 
         .btn {
-            padding: 1rem 2rem;
+            padding: 1rem 2.5rem;
             border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
@@ -260,13 +441,31 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            font-size: 1rem;
         }
 
         .btn-primary {
             background: var(--accent-gradient);
             color: white;
             border: none;
-            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.3);
+            box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
         }
 
         .btn-primary:hover {
@@ -282,7 +481,8 @@
 
         .btn-secondary:hover {
             border-color: var(--accent-primary);
-            background: var(--card-hover);
+            background: var(--bg-tertiary);
+            transform: translateY(-3px);
         }
 
         .scroll-indicator {
@@ -307,60 +507,105 @@
 
         /* Section Styles */
         section {
-            padding: 6rem 5%;
+            padding: 8rem 5%;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 50px;
+            color: var(--accent-primary);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
         }
 
         .section-header h2 {
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 700;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
             margin-bottom: 1rem;
         }
 
         .section-header p {
             color: var(--text-secondary);
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         /* Skills Section */
+        .skills-section {
+            background: var(--bg-secondary);
+        }
+
         .skills-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .skill-category {
-            background: var(--bg-secondary);
+            background: var(--bg-tertiary);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 24px;
             padding: 2rem;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-category::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .skill-category:hover::before {
+            opacity: 0.05;
         }
 
         .skill-category:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--accent-primary);
-            box-shadow: var(--shadow);
+            box-shadow: var(--glow);
+        }
+
+        .skill-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
         }
 
         .skill-category h3 {
             font-size: 1.3rem;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .skill-category h3 svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--accent-primary);
+            margin-bottom: 1rem;
         }
 
         .skill-tags {
@@ -370,19 +615,19 @@
         }
 
         .skill-tag {
-            background: var(--bg-tertiary);
+            background: var(--bg-secondary);
             padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            border-radius: 12px;
+            font-size: 0.85rem;
             color: var(--text-secondary);
             transition: all 0.3s ease;
             border: 1px solid transparent;
         }
 
         .skill-tag:hover {
-            background: var(--card-hover);
-            border-color: var(--accent-primary);
-            color: var(--text-primary);
+            background: var(--accent-primary);
+            color: white;
+            transform: scale(1.05);
         }
 
         /* Projects Section */
@@ -397,21 +642,37 @@
         .project-card {
             background: var(--bg-secondary);
             border: 1px solid var(--border-color);
-            border-radius: 20px;
+            border-radius: 24px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.4s ease;
             cursor: pointer;
+            position: relative;
+        }
+
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent-gradient);
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .project-card:hover::before {
+            transform: scaleX(1);
         }
 
         .project-card:hover {
             transform: translateY(-8px);
-            border-color: var(--accent-primary);
-            box-shadow: var(--shadow);
+            box-shadow: var(--glow);
         }
 
         .project-image {
             width: 100%;
-            height: 200px;
+            height: 220px;
             background: var(--bg-tertiary);
             display: flex;
             align-items: center;
@@ -419,43 +680,52 @@
             overflow: hidden;
         }
 
-        .project-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.3s ease;
+        .project-image svg {
+            width: 60px;
+            height: 60px;
+            fill: var(--text-muted);
+            transition: transform 0.4s ease;
         }
 
-        .project-card:hover .project-image img {
-            transform: scale(1.05);
+        .project-card:hover .project-image svg {
+            transform: scale(1.1) rotate(5deg);
         }
 
         .project-content {
-            padding: 1.5rem;
+            padding: 2rem;
         }
 
         .project-content h3 {
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .project-content h3 svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--accent-primary);
         }
 
         .project-content p {
             color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
         }
 
         .project-tech {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .project-tech span {
             background: var(--bg-tertiary);
-            padding: 0.25rem 0.75rem;
-            border-radius: 12px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
             font-size: 0.8rem;
             color: var(--text-secondary);
         }
@@ -470,8 +740,9 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.5rem;
             transition: color 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .project-links a:hover {
@@ -481,6 +752,7 @@
         .project-links svg {
             width: 18px;
             height: 18px;
+            fill: currentColor;
         }
 
         /* Stats Section */
@@ -498,11 +770,38 @@
 
         .stat-card {
             text-align: center;
-            padding: 2rem;
+            padding: 2.5rem;
+            background: var(--bg-tertiary);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-primary);
+        }
+
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem;
+            background: var(--accent-gradient);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon svg {
+            width: 28px;
+            height: 28px;
+            fill: white;
         }
 
         .stat-number {
-            font-size: 3rem;
+            font-family: 'Orbitron', monospace;
+            font-size: 2.5rem;
             font-weight: 800;
             background: var(--accent-gradient);
             -webkit-background-clip: text;
@@ -513,6 +812,7 @@
         .stat-label {
             color: var(--text-secondary);
             margin-top: 0.5rem;
+            font-size: 0.95rem;
         }
 
         /* Contact Section */
@@ -526,7 +826,7 @@
             display: flex;
             justify-content: center;
             gap: 1.5rem;
-            margin-top: 2rem;
+            margin-top: 3rem;
             flex-wrap: wrap;
         }
 
@@ -541,12 +841,31 @@
             justify-content: center;
             text-decoration: none;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--accent-gradient);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s ease;
+        }
+
+        .social-link:hover::before {
+            width: 200%;
+            height: 200%;
         }
 
         .social-link:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
             border-color: var(--accent-primary);
-            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
         }
 
         .social-link svg {
@@ -554,65 +873,97 @@
             height: 24px;
             fill: var(--text-secondary);
             transition: fill 0.3s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .social-link:hover svg {
-            fill: var(--accent-primary);
+            fill: white;
         }
 
         /* Footer */
         footer {
             text-align: center;
-            padding: 2rem 5%;
+            padding: 3rem 5%;
             border-top: 1px solid var(--border-color);
             color: var(--text-muted);
         }
 
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
+        footer p {
+            margin-bottom: 0.5rem;
         }
 
-        .mobile-menu-btn span {
-            display: block;
-            width: 25px;
-            height: 2px;
-            background: var(--text-primary);
-            margin: 6px 0;
-            transition: all 0.3s ease;
+        footer a {
+            color: var(--accent-primary);
+            text-decoration: none;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-secondary);
+                flex-direction: column;
+                padding: 2rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+            .nav-links.active {
+                display: flex;
             }
 
             .mobile-menu-btn {
                 display: block;
             }
 
-            .hero {
-                padding-top: 8rem;
+            .hero-avatar-ring {
+                width: 140px;
+                height: 140px;
+            }
+
+            .hero-avatar {
+                width: 120px;
+                height: 120px;
             }
 
             section {
-                padding: 4rem 5%;
+                padding: 5rem 5%;
             }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animations on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
     </style>
 </head>
 <body>
     <!-- Animated Background -->
-    <div class="bg-animation" id="bgAnimation"></div>
+    <div class="bg-animation" id="bgAnimation">
+        <div class="glow-orb orb-1"></div>
+        <div class="glow-orb orb-2"></div>
+        <div class="glow-orb orb-3"></div>
+    </div>
+    <div class="grid-overlay"></div>
 
     <!-- Navigation -->
     <nav>
-        <div class="logo">Yeshenyue11</div>
+        <a href="#" class="logo">Yeshenyue11</a>
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
@@ -620,9 +971,9 @@
             <li><a href="#projects">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
-        <div style="display: flex; gap: 1rem; align-items: center;">
+        <div class="nav-actions">
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-                <svg class="sun-icon" viewBox="0 0 24 24" id="sunIcon">
+                <svg class="sun-icon" viewBox="0 0 24 24" id="themeIcon">
                     <circle cx="12" cy="12" r="5"></circle>
                     <line x1="12" y1="1" x2="12" y2="3"></line>
                     <line x1="12" y1="21" x2="12" y2="23"></line>
@@ -634,7 +985,7 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
             </button>
-            <button class="mobile-menu-btn" aria-label="Menu">
+            <button class="mobile-menu-btn" aria-label="Menu" id="mobileMenuBtn">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -644,21 +995,28 @@
 
     <!-- Hero Section -->
     <section class="hero" id="home">
-        <div class="hero-avatar">
-            <img src="https://github.com/Yeshenyue11.png" alt="Yeshenyue11" onerror="this.style.display='none'">
+        <div class="hero-avatar-container">
+            <div class="hero-avatar-ring"></div>
+            <div class="hero-avatar">
+                <img src="https://github.com/Yeshenyue11.png" alt="Yeshenyue11">
+            </div>
+        </div>
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Available for opportunities
         </div>
         <h1>Yeshenyue11</h1>
         <div class="typing-text">
             <span id="typingText"></span><span class="cursor"></span>
         </div>
         <p class="hero-description">
-            Passionate Full Stack Developer crafting beautiful digital experiences.
+            I'm a passionate Full Stack Developer crafting beautiful digital experiences.
             I love turning complex problems into simple, elegant solutions.
         </p>
         <div class="hero-buttons">
             <a href="#projects" class="btn btn-primary">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                 </svg>
                 View Projects
             </a>
@@ -673,33 +1031,35 @@
 
     <!-- About Section -->
     <section id="about">
-        <div class="section-header">
-            <h2>About Me</h2>
-            <p>Get to know me better</p>
+        <div class="section-header fade-in">
+            <span class="section-tag">About Me</span>
+            <h2>Passionate Developer</h2>
+            <p>Creating innovative solutions with modern technologies</p>
         </div>
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;" class="fade-in">
+            <p style="color: var(--text-secondary); font-size: 1.15rem; line-height: 1.9; margin-bottom: 2rem;">
                 Hi! I'm a passionate developer with a love for creating beautiful, functional, and user-centered digital experiences.
                 With expertise spanning both frontend and backend technologies, I bring ideas to life through clean code and innovative solutions.
             </p>
-            <p style="color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8;">
+            <p style="color: var(--text-secondary); font-size: 1.15rem; line-height: 1.9;">
                 When I'm not coding, you can find me exploring new technologies, contributing to open-source projects, or sharing knowledge with the developer community.
             </p>
         </div>
     </section>
 
     <!-- Skills Section -->
-    <section id="skills" style="background: var(--bg-secondary);">
-        <div class="section-header">
-            <h2>Skills & Technologies</h2>
-            <p>Tools and technologies I work with</p>
+    <section class="skills-section" id="skills">
+        <div class="section-header fade-in">
+            <span class="section-tag">Skills</span>
+            <h2>My Expertise</h2>
+            <p>Technologies I work with</p>
         </div>
         <div class="skills-grid">
-            <div class="skill-category">
-                <h3>
+            <div class="skill-category fade-in">
+                <div class="skill-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    Frontend
-                </h3>
+                </div>
+                <h3>Frontend</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">React</span>
                     <span class="skill-tag">Vue.js</span>
@@ -709,11 +1069,11 @@
                     <span class="skill-tag">Three.js</span>
                 </div>
             </div>
-            <div class="skill-category">
-                <h3>
+            <div class="skill-category fade-in">
+                <div class="skill-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    Backend
-                </h3>
+                </div>
+                <h3>Backend</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">Node.js</span>
                     <span class="skill-tag">Python</span>
@@ -723,11 +1083,11 @@
                     <span class="skill-tag">FastAPI</span>
                 </div>
             </div>
-            <div class="skill-category">
-                <h3>
+            <div class="skill-category fade-in">
+                <div class="skill-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    DevOps
-                </h3>
+                </div>
+                <h3>DevOps</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">Docker</span>
                     <span class="skill-tag">Kubernetes</span>
@@ -736,11 +1096,11 @@
                     <span class="skill-tag">Nginx</span>
                 </div>
             </div>
-            <div class="skill-category">
-                <h3>
+            <div class="skill-category fade-in">
+                <div class="skill-icon">
                     <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-                    Databases
-                </h3>
+                </div>
+                <h3>Databases</h3>
                 <div class="skill-tags">
                     <span class="skill-tag">PostgreSQL</span>
                     <span class="skill-tag">MySQL</span>
@@ -753,85 +1113,154 @@
 
     <!-- Projects Section -->
     <section id="projects">
-        <div class="section-header">
+        <div class="section-header fade-in">
+            <span class="section-tag">Portfolio</span>
             <h2>Featured Projects</h2>
             <p>Some of my recent work</p>
         </div>
         <div class="projects-grid">
-            <div class="project-card">
+            <div class="project-card fade-in">
                 <div class="project-image">
-                    <svg width="80" height="80" viewBox="0 0 24 24" fill="var(--text-muted)">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-                    </svg>
+                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                 </div>
                 <div class="project-content">
-                    <h3>uu</h3>
-                    <p>An amazing project showcasing modern development practices and beautiful design.</p>
+                    <h3>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                        OpenAI-Gemini Proxy
+                    </h3>
+                    <p>A free OpenAI-compatible API powered by Google Gemini. Deploy anywhere, use with any OpenAI-compatible tool.</p>
                     <div class="project-tech">
-                        <span>React</span>
                         <span>Node.js</span>
-                        <span>MongoDB</span>
+                        <span>TypeScript</span>
+                        <span>Cloudflare</span>
                     </div>
                     <div class="project-links">
-                        <a href="https://github.com/Yeshenyue11/uu">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                        <a href="https://github.com/Yeshenyue11/gemini">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                             Code
                         </a>
-                        <a href="#">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-                            Demo
+                        <a href="https://github.com/Yeshenyue11/gemini/stargazers">
+                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            Star
                         </a>
                     </div>
                 </div>
             </div>
-            <!-- Add more project cards as needed -->
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z"/></svg>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+                        SubsTracker
+                    </h3>
+                    <p>A lightweight subscription management system with multi-channel notifications and intelligent reminders.</p>
+                    <div class="project-tech">
+                        <span>JavaScript</span>
+                        <span>Cloudflare Workers</span>
+                        <span>Telegram</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Yeshenyue11/subscription-manager">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            Code
+                        </a>
+                        <a href="https://github.com/Yeshenyue11/subscription-manager/stargazers">
+                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            Star
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="project-card fade-in">
+                <div class="project-image">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div class="project-content">
+                    <h3>
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/></svg>
+                        Hello World
+                    </h3>
+                    <p>The classic starter project - perfect for beginning your coding journey.</p>
+                    <div class="project-tech">
+                        <span>MIT</span>
+                        <span>Starter</span>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/Yeshenyue11/hello">
+                            <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                            Code
+                        </a>
+                        <a href="https://github.com/Yeshenyue11/hello/stargazers">
+                            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                            Star
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Stats Section -->
-    <section class="stats-section">
+    <section class="stats-section" id="stats">
+        <div class="section-header fade-in">
+            <span class="section-tag">Stats</span>
+            <h2>By The Numbers</h2>
+            <p>A glimpse at my GitHub activity</p>
+        </div>
         <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-number" id="statProjects">20+</div>
-                <div class="stat-label">Projects Completed</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </div>
+                <div class="stat-number">5+</div>
+                <div class="stat-label">Projects</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statCommits">1000+</div>
-                <div class="stat-label">GitHub Commits</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div class="stat-number">100+</div>
+                <div class="stat-label">Commits</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statStars">100+</div>
-                <div class="stat-label">Stars Earned</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+                </div>
+                <div class="stat-number">3</div>
+                <div class="stat-label">Languages</div>
             </div>
-            <div class="stat-card">
-                <div class="stat-number" id="statFollowers">50+</div>
-                <div class="stat-label">Followers</div>
+            <div class="stat-card fade-in">
+                <div class="stat-icon">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <div class="stat-number">∞</div>
+                <div class="stat-label">Learning</div>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
     <section id="contact">
-        <div class="contact-content">
-            <div class="section-header">
-                <h2>Get In Touch</h2>
-                <p>Let's work together!</p>
-            </div>
-            <p style="color: var(--text-secondary); font-size: 1.1rem;">
+        <div class="section-header fade-in">
+            <span class="section-tag">Contact</span>
+            <h2>Let's Connect</h2>
+            <p>Got a project? Let's work together!</p>
+        </div>
+        <div class="contact-content fade-in">
+            <p style="color: var(--text-secondary); font-size: 1.15rem; margin-bottom: 2rem;">
                 I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
             </p>
             <div class="social-links">
                 <a href="https://github.com/Yeshenyue11" class="social-link" aria-label="GitHub">
                     <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                 </a>
-                <a href="https://twitter.com/Yeshenyue11" class="social-link" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                </a>
-                <a href="https://linkedin.com/in/Yeshenyue11" class="social-link" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                </a>
-                <a href="mailto:your-email@gmail.com" class="social-link" aria-label="Email">
+                <a href="mailto:yeshenyue11@github.com" class="social-link" aria-label="Email">
                     <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                </a>
+                <a href="https://yeshenyue11.github.io" class="social-link" aria-label="Website">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
                 </a>
             </div>
         </div>
@@ -840,31 +1269,43 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2025 Yeshenyue11. Crafted with ❤️</p>
+        <p>
+            <a href="https://github.com/Yeshenyue11">GitHub</a> •
+            <a href="https://yeshenyue11.github.io">Website</a>
+        </p>
     </footer>
 
     <script>
         // Theme Toggle
         const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
         const html = document.documentElement;
 
-        // Check for saved theme preference or default to dark mode
+        // Sun icon
+        const sunIcon = '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>';
+
+        // Moon icon
+        const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
+
         const currentTheme = localStorage.getItem('theme') || 'dark';
         if (currentTheme === 'light') {
             html.classList.add('light-mode');
+            themeIcon.innerHTML = moonIcon;
         }
 
         themeToggle.addEventListener('click', () => {
             html.classList.toggle('light-mode');
-            const theme = html.classList.contains('light-mode') ? 'light' : 'dark';
-            localStorage.setItem('theme', theme);
+            const isLight = html.classList.contains('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            themeIcon.innerHTML = isLight ? moonIcon : sunIcon;
         });
 
         // Typing Animation
         const texts = [
             'Full Stack Developer',
-            '创意 编程 爱好者',
-            'Open Source Enthusiast',
-            'Building Amazing Things'
+            'Creative Coder 💡',
+            'Open Source Enthusiast 🚀',
+            'Building the Future ✨'
         ];
 
         let textIndex = 0;
@@ -883,7 +1324,7 @@
                 charIndex++;
             }
 
-            let typeSpeed = isDeleting ? 50 : 100;
+            let typeSpeed = isDeleting ? 40 : 80;
 
             if (!isDeleting && charIndex === currentText.length) {
                 typeSpeed = 2000;
@@ -901,22 +1342,34 @@
 
         // Create floating particles
         const bgAnimation = document.getElementById('bgAnimation');
-        for (let i = 0; i < 50; i++) {
+        for (let i = 0; i < 80; i++) {
             const particle = document.createElement('div');
             particle.className = 'particle';
             particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 15 + 's';
-            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 15 + 10) + 's';
             bgAnimation.appendChild(particle);
         }
 
-        // Smooth scroll for navigation
+        // Mobile Menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // Smooth scroll
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth' });
+                const href = this.getAttribute('href');
+                if (href !== '#') {
+                    e.preventDefault();
+                    const target = document.querySelector(href);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                        navLinks.classList.remove('active');
+                    }
                 }
             });
         });
@@ -924,41 +1377,34 @@
         // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
-            rootMargin: '0px 0px -100px 0px'
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
 
-        // Observe elements
-        document.querySelectorAll('.skill-category, .project-card, .stat-card').forEach(el => {
-            el.style.opacity = '0';
-            el.style.transform = 'translateY(30px)';
-            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        document.querySelectorAll('.fade-in').forEach(el => {
             observer.observe(el);
         });
 
-        // Mobile menu toggle
-        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-        const navLinks = document.querySelector('.nav-links');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            if (navLinks.style.display === 'flex') {
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '100%';
-                navLinks.style.left = '0';
-                navLinks.style.right = '0';
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.background = 'var(--bg-secondary)';
-                navLinks.style.padding = '2rem';
-                navLinks.style.borderBottom = '1px solid var(--border-color)';
+        // Navbar background on scroll
+        const nav = document.querySelector('nav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                nav.style.background = html.classList.contains('light-mode')
+                    ? 'rgba(248, 249, 254, 0.95)'
+                    : 'rgba(10, 10, 15, 0.95)';
+                nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.2)';
+            } else {
+                nav.style.background = html.classList.contains('light-mode')
+                    ? 'rgba(248, 249, 254, 0.8)'
+                    : 'rgba(10, 10, 15, 0.8)';
+                nav.style.boxShadow = 'none';
             }
         });
     </script>
